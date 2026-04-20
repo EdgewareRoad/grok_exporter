@@ -18,13 +18,14 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	json "github.com/bitly/go-simplejson"
-	configuration "github.com/EdgewareRoad/grok_exporter/config/v3"
-	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	configuration "github.com/EdgewareRoad/grok_exporter/config/v3"
+	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
+	json "github.com/bitly/go-simplejson"
+	"github.com/sirupsen/logrus"
 )
 
 type context_string struct {

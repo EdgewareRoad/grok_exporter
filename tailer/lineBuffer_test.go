@@ -100,13 +100,13 @@ func TestLineBufferClear(t *testing.T) {
 func TestLineBufferBlockingPop(t *testing.T) {
 	buf := NewLineBuffer()
 	done := make(chan struct{})
-	go func() {
+	t.Run("hello test", func(t *testing.T) {
 		l := buf.BlockingPop()
 		if l.Line != "hello" {
 			t.Fatalf("expected to read \"hello\" but got %q.", l.Line)
 		}
 		close(done)
-	}()
+	})
 	select {
 	case <-done:
 		t.Fatal("BlockingPop() returned unexpectedly")
