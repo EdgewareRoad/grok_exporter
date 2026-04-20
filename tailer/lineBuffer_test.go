@@ -16,7 +16,7 @@ package tailer
 
 import (
 	"fmt"
-	"github.com/fstab/grok_exporter/tailer/fswatcher"
+	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
 	"math/rand"
 	"sync"
 	"testing"

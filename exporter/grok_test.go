@@ -15,11 +15,12 @@
 package exporter
 
 import (
-	configuration "github.com/fstab/grok_exporter/config/v3"
-	"github.com/fstab/grok_exporter/oniguruma"
-	"gopkg.in/yaml.v2"
 	"strings"
 	"testing"
+
+	configuration "github.com/EdgewareRoad/grok_exporter/config/v3"
+	"github.com/EdgewareRoad/grok_exporter/oniguruma"
+	"gopkg.in/yaml.v2"
 )
 
 // copy-and-paste from grok_exporter.go

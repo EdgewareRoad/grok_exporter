@@ -18,7 +18,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	config "github.com/fstab/grok_exporter/config/v3"
+	config "github.com/EdgewareRoad/grok_exporter/config/v3"
 	"io/ioutil"
 	"net"
 	"net/http"

@@ -15,7 +15,7 @@
 package v3
 
 import (
-	"github.com/fstab/grok_exporter/config/v2"
+	"github.com/EdgewareRoad/grok_exporter/config/v2"
 	"gopkg.in/yaml.v2"
 	"testing"
 )

@@ -16,8 +16,8 @@ package v2
 
 import (
 	"fmt"
-	"github.com/fstab/grok_exporter/tailer/glob"
-	"github.com/fstab/grok_exporter/template"
+	"github.com/EdgewareRoad/grok_exporter/tailer/glob"
+	"github.com/EdgewareRoad/grok_exporter/template"
 	"gopkg.in/yaml.v2"
 	"strconv"
 	"strings"

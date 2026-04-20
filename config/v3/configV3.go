@@ -22,9 +22,9 @@ import (
 	"strings"
 	"time"
 
-	v2 "github.com/fstab/grok_exporter/config/v2"
-	"github.com/fstab/grok_exporter/tailer/glob"
-	"github.com/fstab/grok_exporter/template"
+	v2 "github.com/EdgewareRoad/grok_exporter/config/v2"
+	"github.com/EdgewareRoad/grok_exporter/tailer/glob"
+	"github.com/EdgewareRoad/grok_exporter/template"
 	"gopkg.in/yaml.v2"
 )
 

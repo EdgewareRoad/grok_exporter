@@ -16,8 +16,8 @@ package tailer
 
 import (
 	"fmt"
-	"github.com/fstab/grok_exporter/tailer/fswatcher"
-	"github.com/fstab/grok_exporter/tailer/glob"
+	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
+	"github.com/EdgewareRoad/grok_exporter/tailer/glob"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

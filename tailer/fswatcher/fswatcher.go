@@ -16,7 +16,7 @@ package fswatcher
 
 import (
 	"fmt"
-	"github.com/fstab/grok_exporter/tailer/glob"
+	"github.com/EdgewareRoad/grok_exporter/tailer/glob"
 	"github.com/prometheus/common/log"
 	"github.com/sirupsen/logrus"
 	"io"

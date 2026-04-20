@@ -15,7 +15,7 @@
 package tailer
 
 import (
-	"github.com/fstab/grok_exporter/tailer/fswatcher"
+	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
 	"github.com/sirupsen/logrus"
 )
 
