@@ -16,11 +16,12 @@ package tailer
 
 import (
 	"fmt"
-	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
 	"math/rand"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
 )
 
 // First produce 10,000 lines, then consume 10,000 lines.
@@ -98,20 +99,23 @@ func TestLineBufferClear(t *testing.T) {
 }
 
 func TestLineBufferBlockingPop(t *testing.T) {
-	buf := NewLineBuffer()
+	var buf lineBuffer = NewLineBuffer()
 	done := make(chan struct{})
-	t.Run("hello test", func(t *testing.T) {
-		l := buf.BlockingPop()
-		if l.Line != "hello" {
-			t.Fatalf("expected to read \"hello\" but got %q.", l.Line)
-		}
-		close(done)
-	})
+	var err string = ""
+	go func(err *string) {
+			l := buf.BlockingPop()
+			if l.Line != "hello" {
+				*err = fmt.Sprintf("expected to read \"hello\" but got %q.", l.Line)
+			}
+			close(done)
+	}(&err)
 	select {
 	case <-done:
 		t.Fatal("BlockingPop() returned unexpectedly")
 	case <-time.After(200 * time.Millisecond):
-		// ok
+		if err != "" {
+			t.Fatal(err)
+		}
 	}
 	buf.Push(&fswatcher.Line{Line: "hello", File: "/tmp/hello.log"})
 	select {
