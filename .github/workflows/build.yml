@@ -52,7 +52,7 @@ jobs:
         run: |
             ls -l /workspace
             ls -l /workspace/logstash-patterns-core
-            /workspace/hack/release.sh $VERSION $BRANCH /workspace/dist          
+            /workspace/hack/release.sh $VERSION $BRANCH $REVISION /workspace/dist          
             ls -l /workspace/dist
     - name: Check output
       run: |

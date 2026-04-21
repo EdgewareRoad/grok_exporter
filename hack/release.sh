@@ -83,7 +83,7 @@ function release_linux_amd64 {
 # main
 #--------------------------------------------------------------
 
-mkdir -p dist
-rm -rf dist/grok_exporter-*
+mkdir -p $DIST_DIR
+rm -rf $DIST_DIR/grok_exporter-*
 run_tests
 release_linux_amd64
