@@ -75,6 +75,7 @@ function create_zip_file {
 
 function run_docker_linux_amd64 {
     cd /go/src/github.com/EdgewareRoad/grok_exporter
+    export CGO_LDFLAGS=/usr/local/lib/libonig.a
     go build -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-amd64/grok_exporter" .
 }
 
