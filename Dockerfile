@@ -17,13 +17,15 @@ RUN tar -C /usr/local -xzf go1.26.2.linux-amd64.tar.gz
 ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH
 
-RUN mkdir -p /go/src/github.com/EdgewareRoad
+RUN mkdir -p /go/src/github.com/EdgewareRoad/grok_exporter
 ENV GOPATH=/go
 ENV PATH=$GOPATH/bin:$PATH
 
-WORKDIR /go/src/github.com/EdgewareRoad
-RUN git clone -b $BRANCH --single-branch https://github.com/EdgewareRoad/grok_exporter
 WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter
+RUN git init
+RUN git remote add origin https://github.com/EdgewareRoad/grok_exporter
+RUN git fetch origin
+RUN git checkout $BRANCH
 RUN git submodule update --init --recursive
 
 WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter/hack
