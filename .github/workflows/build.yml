@@ -50,7 +50,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: grokexporter-builder:latest
-        options: -e VERSION=${{ steps.read-properties.outputs.grokexporter_version }} -e BRANCH=${{ steps.branch-names.outputs.current_branch }} --mount type=bind,source=${{ github.workspace }},target=/workspace
+        options: -e VERSION=${{ steps.read-properties.outputs.grokexporter_version }} -e BRANCH=${{ steps.branch-names.outputs.current_branch }} -e REVISION=${{ github.sha }} --mount type=bind,source=${{ github.workspace }},target=/workspace
         run: |
             ls -l /workspace
             /workspace/hack/release.sh $VERSION $BRANCH /workspace/dist          
