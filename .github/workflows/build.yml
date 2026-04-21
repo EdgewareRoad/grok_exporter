@@ -1,0 +1,49 @@
+name: Build
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      pull-requests: write
+      
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6.0.2
+    - name: Read/Write Properties File
+      uses: kurt-code/gha-properties@v0.0.2
+      id: read-properties
+      with:
+        operation: 'read'
+        file-path: 'version.properties'
+        keys: 'grokexporter.version'
+    - name: Get branch name
+      id: branch-names
+      uses: tj-actions/branch-names@v9
+    - name: Get the Read properties
+      run: |
+        echo "version: ${{ steps.read-properties.outputs.grokexporter_version }}"
+        echo "github.ref: ${{ github.ref }}"
+        echo "branch: ${{ steps.branch-names.outputs.current_branch }}"
+    - name: Build using Dockerfile
+      runs:
+        using: "docker"
+        image: "Dockerfile"
+        args: --build-arg VERSION=${{ steps.read-properties.outputs.grokexporter_version }} --build-arg BRANCH=${{ steps.branch-names.outputs.current_branch }}
+        volumes: .:/output
+    - name: "Create Release"
+      id: create_release
+      uses: softprops/action-gh-release@v3.0.0
+      if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref, steps.read-properties.outputs.grokexporter_version)
+      with:
+        tag_name: ${{ steps.read-properties.outputs.grokexporter_version }}
+        name: Release ${{ steps.read-properties.outputs.grokexporter_version }}
+        body_path: CHANGELOG.md
+        files: grok_exporter-${{ steps.read-properties.outputs.grokexporter_version }}.linux-amd64.zip

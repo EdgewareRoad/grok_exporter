@@ -19,13 +19,14 @@ fi
 
 cd /go/src/github.com/EdgewareRoad/grok_exporter
 
-export VERSION=1.1.0-SNAPSHOT
+export VERSION=$1
+export BRANCH=$2
 
 export VERSION_FLAGS="\
         -X github.com/EdgewareRoad/grok_exporter/exporter.Version=$VERSION
         -X github.com/EdgewareRoad/grok_exporter/exporter.BuildDate=$(date +%Y-%m-%d)
-        -X github.com/EdgewareRoad/grok_exporter/exporter.Branch=$(git rev-parse --abbrev-ref HEAD)
-        -X github.com/EdgewareRoad/grok_exporter/exporter.Revision=$(git rev-parse --short HEAD)
+        -X github.com/EdgewareRoad/grok_exporter/exporter.Branch=$(git rev-parse --abbrev-ref $BRANCH)
+        -X github.com/EdgewareRoad/grok_exporter/exporter.Revision=$(git rev-parse --short $BRANCH)
 "
 
 #--------------------------------------------------------------
@@ -66,6 +67,8 @@ function release_linux_amd64 {
     echo "Building dist/grok_exporter-$VERSION.linux-amd64.zip"
     run_docker_linux_amd64
     create_zip_file grok_exporter-$VERSION.linux-amd64
+    mkdir -p /output    # should already be there, but just in case
+    cp dist/grok_exporter-$VERSION.linux-amd64.zip /output/
 }
 
 #--------------------------------------------------------------
