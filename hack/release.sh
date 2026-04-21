@@ -65,7 +65,7 @@ function create_zip_file {
 }
 
 function run_docker_linux_amd64 {
-    go build -ldflags "$VERSION_FLAGS" -o "$DIST_DIR/grok_exporter-$VERSION.linux-amd64/grok_exporter" .
+    go build -ldflags "$VERSION_FLAGS" -buildvcs=false -o "$DIST_DIR/grok_exporter-$VERSION.linux-amd64/grok_exporter" .
 }
 
 
