@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/fstab/grok_exporter.svg?branch=master)](https://travis-ci.org/fstab/grok_exporter) [![Build status](https://ci.appveyor.com/api/projects/status/d8aq0pa3yfoapd69?svg=true)](https://ci.appveyor.com/project/fstab/grok-exporter) [![Coverage Status](https://coveralls.io/repos/github/fstab/grok_exporter/badge.svg?branch=master)](https://coveralls.io/github/fstab/grok_exporter?branch=master)
+_Forked from [https://github.com/fstab/grok_exporter](https://github.com/fstab/grok_exporter) to remediate vulnerabilities for Ubuntu. For simplicity, moved release to dynamic linkage to [Oniguruma] library_
 
 ![grok_exporter](docs/logo.svg)
 
@@ -16,7 +16,12 @@ The `grok_exporter` aims at porting Grok from the [ELK stack] to [Prometheus] mo
 How to run the example
 ----------------------
 
-Download `grok_exporter-$ARCH.zip` for your operating system from the [releases] page, extract the archive, `cd grok_exporter-$ARCH`, then run
+Install the libonig5 package, e.g. 
+
+```apt-get install libonig5
+```
+
+Download `grok_exporter-$VERSION.linux-amd64.zip` for your AMD64 Linux OS from the [releases] page, extract the archive, `cd grok_exporter-$VERSION.linux-amd64`, then run
 
 ```bash
 ./grok_exporter -config ./example/config.yml
@@ -57,50 +62,6 @@ server:
 
 [CONFIG.md] describes the `grok_exporter` configuration file and shows how to define Grok patterns, Prometheus metrics, and labels.  It also details how to configure file, stdin, and webhook inputs.
 
-How to build from source
------------------------
-
-In order to compile `grok_exporter` from source, you need
-
-* [Go] installed and `$GOPATH` set.
-* [gcc] installed for `cgo`. On Ubuntu, use `apt-get install build-essential`.
-* Header files for the [Oniguruma] regular expression library, see below.
-
-**Installing the Oniguruma library on OS X**
-
-```bash
-brew install oniguruma
-```
-
-**Installing the Oniguruma library on Ubuntu Linux**
-
-```bash
-sudo apt-get install libonig-dev
-```
-
-**Installing the Oniguruma library from source**
-
-```bash
-curl -sLO https://github.com/kkos/oniguruma/releases/download/v6.9.5_rev1/onig-6.9.5-rev1.tar.gz
-tar xfz onig-6.9.5-rev1.tar.gz
-cd onig-6.9.5
-./configure
-make
-make install
-```
-
-**Installing grok_exporter**
-
-```bash
-git clone https://github.com/fstab/grok_exporter
-cd grok_exporter
-git submodule update --init --recursive
-go install .
-```
-
-The resulting `grok_exporter` binary will be dynamically linked to the Oniguruma library, i.e. it needs the Oniguruma library to run. The [releases] are statically linked with Oniguruma, i.e. the releases don't require Oniguruma as a run-time dependency. The releases are built with `hack/release.sh`.
-
-_Note: Go 1.13 for Mac OS has a bug affecting the file input. It is recommended to use Go 1.12 on Mac OS until the bug is fixed. Go 1.13.5 is affected. [https://github.com/golang/go/issues/35767](https://github.com/golang/go/issues/35767)._
 
 More Documentation
 ------------------
@@ -120,18 +81,7 @@ External documentation:
 * Extracting Prometheus Metrics from Application Logs - [https://labs.consol.de/...](https://labs.consol.de/monitoring/2016/07/31/Prometheus-Logfile-Monitoring.html)
 * Counting Errors with Prometheus - [https://labs.consol.de/...](https://labs.consol.de/monitoring/2016/08/13/counting-errors-with-prometheus.html)
 * **\[Video\]** Lightning talk on grok_exporter - [https://www.youtube.com/...](https://www.youtube.com/watch?v=jFX8BVT4V_g)
-
-Contact
--------
-
-* For feature requests, bugs reports, etc: Please open a GitHub issue.
-* For bug fixes, contributions, etc: Create a pull request.
-* Questions? Contact me at fabian@fstab.de.
-
-Related Projects
-----------------
-
-Google's [mtail] goes in a similar direction. It uses its own pattern definition language, so it will not work out-of-the-box with existing Grok patterns. However, `mtail`'s [RE2] regular expressions are probably [more CPU efficient] than Grok's [Oniguruma] patterns. `mtail` reads logfiles using the [fsnotify] library, which [might be an obstacle] on operating systems other than Linux.
+* Original version of grok_exporter (multi-OS support, but now not maintained) at [https://github.com/fstab/grok_exporter](https://github.com/fstab/grok_exporter)
 
 License
 -------
