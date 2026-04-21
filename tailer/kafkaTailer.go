@@ -4,9 +4,9 @@ import (
 	ctx "context"
 	"sync"
 
-	"github.com/Shopify/sarama"
 	configuration "github.com/EdgewareRoad/grok_exporter/config/v3"
 	"github.com/EdgewareRoad/grok_exporter/tailer/fswatcher"
+	"github.com/Shopify/sarama"
 	"github.com/sirupsen/logrus"
 )
 

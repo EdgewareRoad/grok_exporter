@@ -27,7 +27,9 @@ type LabelValueTracker interface {
 }
 
 // Represents the label values for a single time series, i.e. if a time series was created with
-//     myVec.WithLabelValues("404", "GET").Add(42)
+//
+//	myVec.WithLabelValues("404", "GET").Add(42)
+//
 // then a labelValues with values = []{"404", "GET"} and the current timestamp is created.
 type observedLabelValues struct {
 	values     []string

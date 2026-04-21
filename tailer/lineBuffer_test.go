@@ -103,11 +103,11 @@ func TestLineBufferBlockingPop(t *testing.T) {
 	done := make(chan struct{})
 	var err string = ""
 	go func(err *string) {
-			l := buf.BlockingPop()
-			if l.Line != "hello" {
-				*err = fmt.Sprintf("expected to read \"hello\" but got %q.", l.Line)
-			}
-			close(done)
+		l := buf.BlockingPop()
+		if l.Line != "hello" {
+			*err = fmt.Sprintf("expected to read \"hello\" but got %q.", l.Line)
+		}
+		close(done)
 	}(&err)
 	select {
 	case <-done:
