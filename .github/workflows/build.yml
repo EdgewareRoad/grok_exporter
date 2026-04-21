@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6.0.2
       with:
-        submodules: recursive
+        submodules: true
 
     - name: Read/Write Properties File
       uses: kurt-code/gha-properties@v0.0.2

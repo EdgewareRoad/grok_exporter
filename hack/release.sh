@@ -31,7 +31,21 @@ export VERSION_FLAGS="\
 #--------------------------------------------------------------
 
 function run_tests {
-    go fmt ./... && go vet ./... && go test ./...
+    go fmt ./...
+    if [[ $EXIT_CODE -ne 0 ]]; then
+        echo "go fmt failed" >&2
+        exit 1
+    fi
+    go vet ./... 
+    if [[ $EXIT_CODE -ne 0 ]]; then
+        echo "go vet failed" >&2
+        exit 1
+    fi
+    go test ./...
+    if [[ $EXIT_CODE -ne 0 ]]; then
+        echo "go test failed" >&2
+        exit 1
+    fi
 }
 
 #--------------------------------------------------------------
