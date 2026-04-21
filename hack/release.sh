@@ -85,9 +85,9 @@ function run_docker_linux_amd64 {
 
 function release_linux_amd64 {
     echo "Building dist/grok_exporter-$VERSION.linux-amd64.zip"
-    enable_legacy_static_linking
+    #enable_legacy_static_linking
     run_docker_linux_amd64
-    revert_legacy_static_linking
+    #revert_legacy_static_linking
     create_zip_file grok_exporter-$VERSION.linux-amd64
 }
 
