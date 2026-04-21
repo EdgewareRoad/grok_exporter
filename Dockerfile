@@ -18,4 +18,5 @@ RUN tar -C /usr/local -xzf go1.26.2.linux-amd64.tar.gz
 ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH
 
+WORKDIR /workspace
 ENTRYPOINT [ "/workspace/hack/release.sh", "$VERSION", "$BRANCH", "$REVISION", "/workspace/dist" ] 
