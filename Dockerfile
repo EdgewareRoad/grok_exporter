@@ -1,5 +1,5 @@
 ARG VERSION=1.1.0-SNAPSHOT
-ARG BRANCH=main
+ARG BRANCH=master
 
 FROM ubuntu:25.10
 
