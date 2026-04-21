@@ -22,7 +22,8 @@ ENV GOPATH=/go
 ENV PATH=$GOPATH/bin:$PATH
 
 WORKDIR /go/src/github.com/EdgewareRoad
-RUN git clone https://github.com/EdgewareRoad/grok_exporter
+RUN git clone -b $BRANCH https://github.com/EdgewareRoad/grok_exporter
+WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter
 RUN git submodule update --init --recursive
 
 WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter/hack
