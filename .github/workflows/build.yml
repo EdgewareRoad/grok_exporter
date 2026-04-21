@@ -51,5 +51,5 @@ jobs:
         tag_name: ${{ steps.read-properties.outputs.grokexporter_version }}
         name: Release ${{ steps.read-properties.outputs.grokexporter_version }}
         body_path: CHANGELOG.md
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.RELEASE_TOKEN }}
         files: ${{ github.workspace }}/dist/grok_exporter-${{ steps.read-properties.outputs.grokexporter_version }}.linux-amd64.zip
