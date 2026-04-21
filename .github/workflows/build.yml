@@ -17,6 +17,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6.0.2
+
     - name: Read/Write Properties File
       uses: kurt-code/gha-properties@v0.0.2
       id: read-properties
@@ -24,25 +25,36 @@ jobs:
         operation: 'read'
         file-path: 'version.properties'
         keys: 'grokexporter.version'
+
     - name: Get branch name
       id: branch-names
       uses: tj-actions/branch-names@v9
+
     - name: Get the Read properties
       run: |
         echo "version: ${{ steps.read-properties.outputs.grokexporter_version }}"
         echo "github.ref: ${{ github.ref }}"
         echo "branch: ${{ steps.branch-names.outputs.current_branch }}"
+
     - name: Build Dockerfile 
       uses: docker/build-push-action@v2
       with:
         tags: grokexporter-builder:latest
         push: false
+
     - name: Build using Dockerfile
       uses: addnab/docker-run-action@v3
       with:
         image: grokexporter-builder:latest
         args: --build-arg VERSION=${{ steps.read-properties.outputs.grokexporter_version }} --build-arg BRANCH=${{ steps.branch-names.outputs.current_branch }}
         options: -v ${{ github.workspace }}:/output
+
+    - name: Check output
+      run: |
+        echo "workspace: ${{ github.workspace }}"
+        ls -l ${{ github.workspace }}
+        ls -l ${{ github.workspace }}/dist
+
     - name: "Create Release"
       id: create_release
       uses: softprops/action-gh-release@v3.0.0
