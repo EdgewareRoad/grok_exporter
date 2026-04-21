@@ -2,8 +2,8 @@
 
 set -e
 
-if [[ $(go version) != *"go1.11"* && $(go version) != *"go1.12"* && $(go version) != *"go1.13"* && $(go version) != *"go1.14"* && $(go version) != *"go1.15"* ]] ; then
-    echo "grok_exporter uses Go 1.11 Modules. Please use Go version >= 1.11." >&2
+if [[ $(go version) != *"go1.26"* ]] ; then
+    echo "grok_exporter uses Go 1.26 Modules. Please use Go version >= 1.26." >&2
     echo "Version found is $(go version)" >&2
     exit 1
 fi
@@ -13,17 +13,14 @@ if git status | grep example/ ; then
     exit 1
 fi
 
-# Needed for go1.11 and go1.12
-export GO111MODULE=on
-
 #=======================================================================================
 # This is supposed to run on OS X.
 # The Darwin release is built natively, Linux and Windows are built in a Docker container
 #========================================================================================
 
-cd ${GOPATH:=$HOME/go}/src/github.com/fstab/grok_exporter
+cd /go/src/github.com/EdgewareRoad/grok_exporter
 
-export VERSION=1.0.0-SNAPSHOT
+export VERSION=1.1.0-SNAPSHOT
 
 export VERSION_FLAGS="\
         -X github.com/fstab/grok_exporter/exporter.Version=$VERSION
@@ -77,40 +74,10 @@ function create_zip_file {
 }
 
 function run_docker_linux_amd64 {
-    docker run \
-        -v $GOPATH/src/github.com/fstab/grok_exporter:/go/src/github.com/fstab/grok_exporter \
-        --net none \
-        --user $(id -u):$(id -g) \
-        --rm -ti "fstab/grok_exporter-compiler-amd64:v$VERSION" \
-        ./compile-linux.sh -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-amd64/grok_exporter"
+    cd /go/src/github.com/fstab/grok_exporter
+    go build -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-amd64/grok_exporter" .
 }
 
-function run_docker_windows_amd64 {
-    docker run \
-        -v $GOPATH/src/github.com/fstab/grok_exporter:/go/src/github.com/fstab/grok_exporter \
-        --net none \
-        --user $(id -u):$(id -g) \
-        --rm -ti "fstab/grok_exporter-compiler-amd64:v$VERSION" \
-        ./compile-windows-amd64.sh -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.windows-amd64/grok_exporter.exe"
-}
-
-function run_docker_linux_arm64v8 {
-    docker run \
-        -v $GOPATH/src/github.com/fstab/grok_exporter:/go/src/github.com/fstab/grok_exporter \
-        --net none \
-        --user $(id -u):$(id -g) \
-        --rm -ti "fstab/grok_exporter-compiler-arm64v8:v$VERSION" \
-        ./compile-linux.sh -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-arm64v8/grok_exporter"
-}
-
-function run_docker_linux_arm32v6 {
-    docker run \
-        -v $GOPATH/src/github.com/fstab/grok_exporter:/go/src/github.com/fstab/grok_exporter \
-        --net none \
-        --user $(id -u):$(id -g) \
-        --rm -ti "fstab/grok_exporter-compiler-arm32v6:v$VERSION" \
-        ./compile-linux.sh -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-arm32v6/grok_exporter"
-}
 
 #--------------------------------------------------------------
 # Release functions
@@ -124,93 +91,10 @@ function release_linux_amd64 {
     create_zip_file grok_exporter-$VERSION.linux-amd64
 }
 
-function release_linux_arm64v8 {
-    echo "Building dist/grok_exporter-$VERSION.linux-arm64v8.zip"
-    run_docker_linux_arm64v8
-    create_zip_file grok_exporter-$VERSION.linux-arm64v8
-}
-
-function release_linux_arm32v6 {
-    echo "Building dist/grok_exporter-$VERSION.linux-arm32v6.zip"
-    enable_legacy_static_linking
-    run_docker_linux_arm32v6
-    revert_legacy_static_linking
-    create_zip_file grok_exporter-$VERSION.linux-arm32v6
-}
-
-function release_windows_amd64 {
-    echo "Building dist/grok_exporter-$VERSION.windows-amd64.zip"
-    run_docker_windows_amd64
-    create_zip_file grok_exporter-$VERSION.windows-amd64
-}
-
-function release_darwin_amd64 {
-    echo "Building dist/grok_exporter-$VERSION.darwin-amd64.zip"
-    if [ "$(uname)" != "Darwin" ]; then
-        echo "WARNING: Darwin releases can only be built on macOS." >&2
-    else
-        enable_legacy_static_linking
-        go build -ldflags "$VERSION_FLAGS" -o dist/grok_exporter-$VERSION.darwin-amd64/grok_exporter .
-        revert_legacy_static_linking
-        create_zip_file grok_exporter-$VERSION.darwin-amd64
-    fi
-}
-
 #--------------------------------------------------------------
 # main
 #--------------------------------------------------------------
 
-case $1 in
-    linux-amd64)
-        rm -rf dist/grok_exporter-*.linux-amd64*
-        run_tests
-        release_linux_amd64
-        ;;
-    linux-arm64v8)
-        rm -rf dist/grok_exporter-*.linux-arm64v8*
-        run_tests
-        release_linux_arm64v8
-        ;;
-    linux-arm32v6)
-        rm -rf dist/grok_exporter-*.linux-arm32v6*
-        run_tests
-        release_linux_arm32v6
-        ;;
-    darwin-amd64)
-        rm -rf dist/grok_exporter-*.darwin-amd64*
-        run_tests
-        release_darwin_amd64
-        ;;
-    windows-amd64)
-        rm -rf dist/grok_exporter-*.windows-amd64*
-        run_tests
-        release_windows_amd64
-        ;;
-    all-amd64)
-        rm -rf dist/grok_exporter-*.*-amd64*
-        run_tests
-        release_linux_amd64
-        release_darwin_amd64
-        release_windows_amd64
-        ;;
-    all)
-        rm -rf dist/grok_exporter-*
-        run_tests
-        release_linux_amd64
-        release_darwin_amd64
-        release_windows_amd64
-        release_linux_arm64v8
-        release_linux_arm32v6
-        ;;
-    *)
-        echo 'Usage: release.sh <arch>' >&2
-        echo 'where <arch> can be:' >&2
-        echo '    - linux-amd64' >&2
-        echo '    - darwin-amd64' >&2
-        echo '    - windows-amd64' >&2
-        echo '    - linux-arm64v8' >&2
-        echo '    - linux-arm32v6' >&2
-        echo '    - all-amd64' >&2
-        echo '    - all' >&2
-        exit 255
-esac
+rm -rf dist/grok_exporter-*
+run_tests
+release_linux_amd64
