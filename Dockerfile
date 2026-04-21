@@ -19,3 +19,4 @@ ENV PATH=$GOROOT/bin:$PATH
 
 ENV GOPATH=/workspace
 
+ENTRYPOINT [ "/workspace/hack/release.sh", "$VERSION", "$BRANCH", "/workspace/dist" ] 
