@@ -1,7 +1,7 @@
+FROM ubuntu:25.10
+
 ARG VERSION=1.1.0-SNAPSHOT
 ARG BRANCH=master
-
-FROM ubuntu:25.10
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     build-essential \
@@ -25,7 +25,8 @@ WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter
 RUN git init
 RUN git remote add origin https://github.com/EdgewareRoad/grok_exporter
 RUN git fetch origin
-RUN git checkout $BRANCH
+RUN echo "Checking out branch: $BRANCH"
+RUN git checkout "$BRANCH"
 RUN git submodule update --init --recursive
 
 WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter/hack
