@@ -15,11 +15,11 @@
 package exporter
 
 import (
-	"github.com/EdgewareRoad/grok_exporter/oniguruma"
 	"os"
 	"path/filepath"
-	"regexp"
 	"testing"
+
+	"github.com/EdgewareRoad/grok_exporter/oniguruma"
 )
 
 func TestDefaultPatternsLoadSuccessfully(t *testing.T) {
@@ -36,8 +36,7 @@ func loadPatternDir(t *testing.T) *Patterns {
 	if err != nil {
 		t.Fatalf("failed to get the current working directory: %v", err)
 	}
-	pwd = regexp.MustCompile("grok_exporter.*").ReplaceAllString(pwd, "grok_exporter") // if in a subdirectory, go up to the project root
-	patternDir := filepath.Join(pwd, "logstash-patterns-core", "patterns")
+	patternDir := filepath.Join(filepath.Dir(pwd), "logstash-patterns-core", "patterns")
 	err = p.AddDir(patternDir)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err.Error())

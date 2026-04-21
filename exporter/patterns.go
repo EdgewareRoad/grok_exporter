@@ -18,7 +18,6 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/EdgewareRoad/grok_exporter/tailer/glob"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -33,7 +32,7 @@ func InitPatterns() *Patterns {
 }
 
 func (p *Patterns) AddDir(path string) error {
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return fmt.Errorf("failed to read pattern directory %v: %v", path, err)
 	}
@@ -53,7 +52,7 @@ func (p *Patterns) AddGlob(globString string) error {
 	if err != nil {
 		return err
 	}
-	fileInfos, err := ioutil.ReadDir(g.Dir())
+	fileInfos, err := os.ReadDir(g.Dir())
 	if err != nil {
 		return fmt.Errorf("failed to read patterns from directory %v: %v", g.Dir(), err)
 	}

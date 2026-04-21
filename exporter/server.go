@@ -18,11 +18,12 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	config "github.com/EdgewareRoad/grok_exporter/config/v3"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
+
+	config "github.com/EdgewareRoad/grok_exporter/config/v3"
 )
 
 type HttpServerPathHandler struct {
@@ -137,7 +138,7 @@ func listenFailedError(host string, port int, err error) error {
 }
 
 func createTempFile(prefix string, data []byte) (string, error) {
-	tempFile, err := ioutil.TempFile(os.TempDir(), prefix)
+	tempFile, err := os.CreateTemp(os.TempDir(), prefix)
 	if err != nil {
 		return "", fmt.Errorf("Failed to create temporary file: %v", err.Error())
 	}
