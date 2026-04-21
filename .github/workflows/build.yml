@@ -28,15 +28,11 @@ jobs:
         file-path: 'version.properties'
         keys: 'grokexporter.version'
 
-    - name: Get branch name
-      id: branch-names
-      uses: tj-actions/branch-names@v9
-
     - name: Get the Read properties
       run: |
         echo "version: ${{ steps.read-properties.outputs.grokexporter_version }}"
         echo "github.ref: ${{ github.ref }}"
-        echo "branch: ${{ steps.branch-names.outputs.current_branch }}"
+        echo "branch: ${{ github.ref_name }}"
 
     - name: Build Dockerfile 
       uses: docker/build-push-action@v2
@@ -48,7 +44,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: grokexporter-builder:latest
-        options: -e VERSION=${{ steps.read-properties.outputs.grokexporter_version }} -e BRANCH=${{ steps.branch-names.outputs.current_branch }} -e REVISION=${{ github.sha }} --mount type=bind,source=${{ github.workspace }},target=/workspace
+        options: -e VERSION=${{ steps.read-properties.outputs.grokexporter_version }} -e BRANCH=${{ github.ref_name }} -e REVISION=${{ github.sha }} --mount type=bind,source=${{ github.workspace }},target=/workspace
         run: |
             ls -l /workspace
             ls -l /workspace/logstash-patterns-core
