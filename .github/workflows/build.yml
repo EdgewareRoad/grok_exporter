@@ -44,10 +44,6 @@ jobs:
         tags: grokexporter-builder:latest
         push: false
 
-    - name: Ensure git submodules initialised correctly
-      run: |
-        git submodule update --init --recursive
-
     - name: Build using Dockerfile
       uses: addnab/docker-run-action@v3
       with:
@@ -55,6 +51,7 @@ jobs:
         options: -e VERSION=${{ steps.read-properties.outputs.grokexporter_version }} -e BRANCH=${{ steps.branch-names.outputs.current_branch }} -e REVISION=${{ github.sha }} --mount type=bind,source=${{ github.workspace }},target=/workspace
         run: |
             ls -l /workspace
+            ls -l /workspace/logstash-patterns-core
             /workspace/hack/release.sh $VERSION $BRANCH /workspace/dist          
             ls -l /workspace/dist
     - name: Check output
