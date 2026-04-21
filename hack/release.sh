@@ -8,14 +8,11 @@ if [[ $(go version) != *"go1.26"* ]] ; then
     exit 1
 fi
 
-if git status | grep example/ ; then
-    echo "error: untracked files in example directory" >&2
-    exit 1
-fi
-
-#=======================================================================================
-# Designed to run inside a Docker container with the grok_exporter source code mounted at /go/src/github.com/EdgewareRoad/grok_exporter
-#========================================================================================
+#==========================================================================================
+# Designed to run inside a Docker container with the grok_exporter source code mounted at
+# /workspace and the output directory at /workspace/dist. The Dockerfile is set up to call
+# this script with the correct parameters.
+#==========================================================================================
 
 export VERSION=$1
 export BRANCH=$2
