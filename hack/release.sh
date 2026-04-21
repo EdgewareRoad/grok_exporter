@@ -14,8 +14,7 @@ if git status | grep example/ ; then
 fi
 
 #=======================================================================================
-# This is supposed to run on OS X.
-# The Darwin release is built natively, Linux and Windows are built in a Docker container
+# Designed to run inside a Docker container with the grok_exporter source code mounted at /go/src/github.com/EdgewareRoad/grok_exporter
 #========================================================================================
 
 cd /go/src/github.com/EdgewareRoad/grok_exporter
@@ -41,26 +40,6 @@ function run_tests {
 # Helper functions
 #--------------------------------------------------------------
 
-function enable_legacy_static_linking {
-    # The compile script in the Docker image sets CGO_LDFLAGS to libonig.a, which should make grok_exporter
-    # statically linked with the Oniguruma library. However, this doesn't work on Darwin and CentOS 6.
-    # As a workaround, we set LDFLAGS directly in the header of oniguruma.go.
-    sed -i.bak 's;#cgo LDFLAGS: -L/usr/local/lib -lonig;#cgo LDFLAGS: /usr/local/lib/libonig.a;' oniguruma/oniguruma.go
-}
-
-function revert_legacy_static_linking {
-    if [ -f oniguruma/oniguruma.go.bak ] ; then
-        mv oniguruma/oniguruma.go.bak oniguruma/oniguruma.go
-    fi
-}
-
-function cleanup {
-    revert_legacy_static_linking
-}
-
-# Make sure revert_legacy_static_linking is called even if a compile error makes this script terminate early
-trap cleanup EXIT
-
 function create_zip_file {
     OUTPUT_DIR=$1
     cp -a logstash-patterns-core/patterns dist/$OUTPUT_DIR
@@ -75,7 +54,6 @@ function create_zip_file {
 
 function run_docker_linux_amd64 {
     cd /go/src/github.com/EdgewareRoad/grok_exporter
-    export CGO_LDFLAGS=/usr/local/lib/libonig.a
     go build -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-amd64/grok_exporter" .
 }
 
@@ -86,9 +64,7 @@ function run_docker_linux_amd64 {
 
 function release_linux_amd64 {
     echo "Building dist/grok_exporter-$VERSION.linux-amd64.zip"
-    enable_legacy_static_linking
     run_docker_linux_amd64
-    revert_legacy_static_linking
     create_zip_file grok_exporter-$VERSION.linux-amd64
 }
 
