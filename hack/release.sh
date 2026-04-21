@@ -67,8 +67,8 @@ function release_linux_amd64 {
     echo "Building dist/grok_exporter-$VERSION.linux-amd64.zip"
     run_docker_linux_amd64
     create_zip_file grok_exporter-$VERSION.linux-amd64
-    mkdir -p /output    # should already be there, but just in case
-    cp dist/grok_exporter-$VERSION.linux-amd64.zip /output/
+    mkdir -p /output/dist
+    cp dist/grok_exporter-$VERSION.linux-amd64.zip /output/dist/
 }
 
 #--------------------------------------------------------------
