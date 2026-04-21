@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6.0.2
+      with:
+        submodules: recursive
 
     - name: Read/Write Properties File
       uses: kurt-code/gha-properties@v0.0.2
@@ -60,10 +62,6 @@ jobs:
         echo "workspace: ${{ github.workspace }}"
         ls -l ${{ github.workspace }}
         ls -l ${{ github.workspace }}/dist
-
-    - name: Ensure git submodules initialised correctly
-      run: |
-        git submodule update --init --recursive
 
     - name: "Create Release"
       id: create_release
