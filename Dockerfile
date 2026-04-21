@@ -17,7 +17,5 @@ RUN tar -C /usr/local -xzf go1.26.2.linux-amd64.tar.gz
 ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH
 
-RUN mkdir -p /go/src/github.com/EdgewareRoad/grok_exporter
-ENV GOPATH=.
+ENV GOPATH=/workspace
 
-ENTRYPOINT [ "hack/release.sh", "$VERSION", "$BRANCH" ] 

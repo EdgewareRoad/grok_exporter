@@ -50,8 +50,11 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: grokexporter-builder:latest
-        args: --build-arg VERSION=${{ steps.read-properties.outputs.grokexporter_version }} --build-arg BRANCH=${{ steps.branch-names.outputs.current_branch }}
-
+        options: --build-arg VERSION=${{ steps.read-properties.outputs.grokexporter_version }} --build-arg BRANCH=${{ steps.branch-names.outputs.current_branch }} --mount type=bind,source=${{ github.workspace }},target=/workspace
+        run: |
+          cp /workspace/hack
+          ./release.sh ${{ steps.read-properties.outputs.grokexporter_version }} ${{ steps.branch-names.outputs.current_branch }} /workspace/dist
+          
     - name: Check output
       run: |
         echo "workspace: ${{ github.workspace }}"
