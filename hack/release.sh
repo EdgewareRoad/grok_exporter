@@ -54,7 +54,6 @@ function create_zip_file {
 }
 
 function run_docker_linux_amd64 {
-    cd /go/src/github.com/EdgewareRoad/grok_exporter
     go build -ldflags "$VERSION_FLAGS" -o "dist/grok_exporter-$VERSION.linux-amd64/grok_exporter" .
 }
 
@@ -67,14 +66,13 @@ function release_linux_amd64 {
     echo "Building dist/grok_exporter-$VERSION.linux-amd64.zip"
     run_docker_linux_amd64
     create_zip_file grok_exporter-$VERSION.linux-amd64
-    mkdir -p /output/dist
-    cp dist/grok_exporter-$VERSION.linux-amd64.zip /output/dist/
 }
 
 #--------------------------------------------------------------
 # main
 #--------------------------------------------------------------
 
+mkdir -p dist
 rm -rf dist/grok_exporter-*
 run_tests
 release_linux_amd64

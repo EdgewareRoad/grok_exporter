@@ -42,18 +42,25 @@ jobs:
         tags: grokexporter-builder:latest
         push: false
 
+    - name: Ensure git submodules initialised correctly
+      run: |
+        git submodule update --init --recursive
+
     - name: Build using Dockerfile
       uses: addnab/docker-run-action@v3
       with:
         image: grokexporter-builder:latest
         args: --build-arg VERSION=${{ steps.read-properties.outputs.grokexporter_version }} --build-arg BRANCH=${{ steps.branch-names.outputs.current_branch }}
-        options: -v ${{ github.workspace }}:/output
 
     - name: Check output
       run: |
         echo "workspace: ${{ github.workspace }}"
         ls -l ${{ github.workspace }}
         ls -l ${{ github.workspace }}/dist
+
+    - name: Ensure git submodules initialised correctly
+      run: |
+        git submodule update --init --recursive
 
     - name: "Create Release"
       id: create_release

@@ -18,16 +18,6 @@ ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH
 
 RUN mkdir -p /go/src/github.com/EdgewareRoad/grok_exporter
-ENV GOPATH=/go
-ENV PATH=$GOPATH/bin:$PATH
+ENV GOPATH=.
 
-WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter
-RUN git init
-RUN git remote add origin https://github.com/EdgewareRoad/grok_exporter
-RUN git fetch origin
-RUN echo "Checking out branch: $BRANCH"
-RUN git checkout "$BRANCH"
-RUN git submodule update --init --recursive
-
-WORKDIR /go/src/github.com/EdgewareRoad/grok_exporter/hack
-ENTRYPOINT [ "/go/src/github.com/EdgewareRoad/grok_exporter/hack/release.sh", "$VERSION", "$BRANCH" ] 
+ENTRYPOINT [ "hack/release.sh", "$VERSION", "$BRANCH" ] 
