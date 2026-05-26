@@ -40,4 +40,4 @@ require (
 	gopkg.in/jcmturner/rpc.v1 v1.1.0 // indirect
 )
 
-go 1.26.2
+go 1.26.3
