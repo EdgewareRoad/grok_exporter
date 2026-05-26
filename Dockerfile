@@ -13,8 +13,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     zip \
     libonig-dev
 
-RUN wget https://dl.google.com/go/go1.26.2.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.26.2.linux-amd64.tar.gz
+RUN wget https://dl.google.com/go/go1.26.3.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.26.3.linux-amd64.tar.gz
 ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH
 
