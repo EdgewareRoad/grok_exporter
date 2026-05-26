@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Release 1.1.1
+-----------------
+
+* Upgraded Go to 1.26.3 to remediate vulnerabilities
+
+Previous Releases
+=================
+
 Release 1.1.0-RC1
 -----------------
 
