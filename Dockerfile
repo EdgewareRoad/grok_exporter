@@ -1,6 +1,6 @@
-FROM ubuntu:25.10
+FROM ubuntu:26.04
 
-ARG VERSION=1.1.1-SNAPSHOT
+ARG VERSION=1.1.2-SNAPSHOT
 ARG BRANCH=master
 ARG REVISION=unknown
 
@@ -13,8 +13,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     zip \
     libonig-dev
 
-RUN wget https://dl.google.com/go/go1.26.3.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.26.3.linux-amd64.tar.gz
+RUN wget https://dl.google.com/go/go1.26.4.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.26.4.linux-amd64.tar.gz
 ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH
 
